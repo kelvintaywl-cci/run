@@ -1,0 +1,14 @@
+export DEBIAN_FRONTEND=noninteractive
+
+sudo apt update -y
+sudo apt install -y docker.io git coreutils
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+chmod +x /usr/bin/yq
+curl -s https://packagecloud.io/install/repositories/circleci/runner/script.deb.sh?any=true | sudo bash
+sudo apt-get install -y circleci-runner
+export CONFIG_YAML=/etc/circleci-runner/circleci-runner-config.yaml
+file $CONFIG_YAML
+yq e ".api.auth_token = \"${token}\"" -i $CONFIG_YAML
+yq e ".api.url = \"https://${hostname}\"" -i $CONFIG_YAML
+yq e ".runner.name = \"${name}\"" -i $CONFIG_YAML
+sudo systemctl enable circleci-runner && sudo systemctl start circleci-runner
