@@ -50,28 +50,3 @@ output "machine3_runner_user" {
   value       = aws_lightsail_instance.circleci_runner3_linux[*].username
   description = "username"
 }
-
-# resource "aws_instance" "aws_ec2_linux_x86_64" {
-#   count = 1
-
-#   ami           = data.aws_ami.ubuntu2204.image_id
-#   instance_type = var.aws_ec2_instance_type
-#   user_data = templatefile(
-#     "${path.module}/tmpl/cloudinit.tftpl",
-#     {
-#       token    = circleci_runner_token.admin.token
-#       name     = format("%s_%02d", "machine3_aws_ec2_linux_2023_x86_64", count.index)
-#       hostname = local.runner_host
-#     }
-#   )
-#   key_name = aws_key_pair.aws_key_pair.key_name
-#   # FIXME: replace hardcoded existing security groups and subnet
-#   security_groups             = ["sg-0473b258fc5ae2ad3"]
-#   subnet_id                   = "subnet-88276aff"
-#   user_data_replace_on_change = true
-
-#   tags = {
-#     Name = format("%s_%02d", "kelvintaywl-cloud-machine-runner3-linux", count.index)
-#   }
-# }
-
