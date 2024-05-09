@@ -6,5 +6,6 @@
 
 This repo contains Terraform stacks to deploy the following CircleCI Runners:
 
-- Machine (Linux)
-- Machine (Windows)
+- :white_check_mark: Machine (Linux)
+- :construction: Machine (Windows)
+- :white_check_mark: Container (k3s)
