@@ -1,0 +1,45 @@
+export DEBIAN_FRONTEND=noninteractive
+
+sudo apt update -y
+sudo apt install -y docker.io git coreutils
+
+# install yq
+sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
+chmod +x /usr/bin/yq
+
+# install k3s
+curl -sfL https://get.k3s.io | sh - 
+sudo k3s kubectl get no
+
+# set kubeconfig to point to k3s config
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+sudo echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> ~/.bashrc
+
+# install kubectl
+# TODO: ensure/check compatible version with k3s
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
+
+kubectl get no
+
+# install Helm via script
+# https://helm.sh/docs/intro/install/#from-script
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+sudo bash ./get_helm.sh
+which helm && helm version
+
+# add Helm repo
+
+helm repo add container-agent https://packagecloud.io/circleci/container-agent/helm
+helm repo update
+
+# setup cluster
+sudo k3s kubectl create namespace ${namespace}
+touch values.yaml
+yq e ".agent.resourceClasses.\"${resource_class}\".token = \"${token}\"" -i values.yaml
+
+helm install container-agent container-agent/container-agent -n ${namespace} -f values.yaml
