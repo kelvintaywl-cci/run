@@ -36,19 +36,25 @@ resource "aws_lightsail_instance" "circleci_runner3_k3s" {
   user_data = templatefile(
     "${path.module}/tmpl/user_data.sh.tftpl",
     {
-      token          = circleci_runner_token.admin.token
-      resource_class = circleci_runner_resource_class.container_k3s.resource_class
-      namespace      = local.namespace
+      token                = circleci_runner_token.admin.token
+      resource_class       = circleci_runner_resource_class.container_k3s.resource_class
+      namespace            = local.namespace
+      cpu_limit            = "500m"
+      mem_limit            = "128Mi"
+      k8s_label_arch_key   = "kubernetes.io/arch"
+      k8s_label_arch_value = "amd64"
+      k8s_label_os_key     = "kubernetes.io/os"
+      k8s_label_os_value   = "linux"
     }
   )
 }
 
-output "machine3_runner_ip" {
+output "container_runner_k3s_ip" {
   value       = aws_lightsail_instance.circleci_runner3_k3s[*].public_ip_address
   description = "IP address"
 }
 
-output "machine3_runner_user" {
+output "container_runner_k3s_user" {
   value       = aws_lightsail_instance.circleci_runner3_k3s[*].username
   description = "username"
 }

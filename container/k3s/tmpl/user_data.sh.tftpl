@@ -13,17 +13,8 @@ sudo k3s kubectl get no
 
 # set kubeconfig to point to k3s config
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-sudo echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> ~/.bashrc
-
-# install kubectl
-# TODO: ensure/check compatible version with k3s
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-kubectl version --client
-
-kubectl get no
+sudo echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> /home/ubuntu/.bashrc
+sudo echo "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml" >> ~/home/ubuntu/.profile
 
 # install Helm via script
 # https://helm.sh/docs/intro/install/#from-script
@@ -40,6 +31,13 @@ helm repo update
 # setup cluster
 sudo k3s kubectl create namespace ${namespace}
 touch values.yaml
+ls -lah values.yaml
 yq e ".agent.resourceClasses.\"${resource_class}\".token = \"${token}\"" -i values.yaml
+yq e ".agent.resourceClasses.\"${resource_class}\".spec.containers[0].resources.limits.cpu = \"${cpu_limit}\"" -i values.yaml
+yq e ".agent.resourceClasses.\"${resource_class}\".spec.containers[0].resources.limits.memory = \"${mem_limit}\"" -i values.yaml
+yq e ".agent.resourceClasses.\"${resource_class}\".spec.nodeSelector.\"${k8s_label_arch_key}\" = \"${k8s_label_arch_value}\"" -i values.yaml
+yq e ".agent.resourceClasses.\"${resource_class}\".spec.nodeSelector.\"${k8s_label_os_key}\" = \"${k8s_label_os_value}\"" -i values.yaml
+
+sudo cat values.yaml
 
 helm install container-agent container-agent/container-agent -n ${namespace} -f values.yaml
