@@ -8,7 +8,15 @@ curl -s https://packagecloud.io/install/repositories/circleci/runner/script.deb.
 sudo apt-get install -y circleci-runner
 export CONFIG_YAML=/etc/circleci-runner/circleci-runner-config.yaml
 file $CONFIG_YAML
+
+mkdir -p /tmp/circleci-runner
+chown circleci: /tmp/circleci-runner
+chmod u+w /tmp/circleci-runner
+
 yq e ".api.auth_token = \"${token}\"" -i $CONFIG_YAML
 yq e ".api.url = \"https://${hostname}\"" -i $CONFIG_YAML
 yq e ".runner.name = \"${name}\"" -i $CONFIG_YAML
+yq e ".runner.working_directory = \"/tmp/circleci-runner\"" -i $CONFIG_YAML
+yq e ".runner.cleanup_working_directory = true" -i $CONFIG_YAML
+
 sudo systemctl enable circleci-runner && sudo systemctl start circleci-runner
