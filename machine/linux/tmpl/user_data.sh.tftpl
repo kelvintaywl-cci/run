@@ -13,6 +13,19 @@ mkdir -p /tmp/circleci-runner
 chown circleci: /tmp/circleci-runner
 chmod u+w /tmp/circleci-runner
 
+# install goenv
+
+sudo git clone https://github.com/go-nv/goenv.git $HOME/.goenv
+# make circleci user the owner of this directory and its children
+sudo chown -R circleci: $HOME/.goenv
+# NOTE: symlink the goenv binary to /usr/local/bin so it's definitely accessible from PATH
+sudo ln -s $HOME/.goenv/bin/goenv /usr/local/bin/goenv
+
+goenv install 1.6.2
+goenv global 1.6.2
+
+export GOENV_ROOT=$HOME/.goenv
+
 yq e ".api.auth_token = \"${token}\"" -i $CONFIG_YAML
 yq e ".api.url = \"https://${hostname}\"" -i $CONFIG_YAML
 yq e ".runner.name = \"${name}\"" -i $CONFIG_YAML
