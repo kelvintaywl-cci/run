@@ -23,12 +23,13 @@ resource "aws_lightsail_key_pair" "gh_key_pair" {
 
 # Create a new GitLab Lightsail Instance
 resource "aws_lightsail_instance" "circleci_runner3_linux" {
-  count             = 1
+  count             = var.num_machines
   name              = format("%s_%02d", "machine3_aws_lightsail_ubuntu22_x86_64", count.index)
   availability_zone = "${var.aws_region}a"
   blueprint_id      = "ubuntu_22_04"
   # 1 GB ram, 2 vCPUs, 40 GB disk, $7/month
-  bundle_id     = "micro_3_0"
+  # 4 GB ram, 2 vCPUs, 80 GB disk, $24/month
+  bundle_id     = "medium_3_0"
   key_pair_name = aws_lightsail_key_pair.gh_key_pair.name
 
   user_data = templatefile(
