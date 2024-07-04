@@ -13,7 +13,7 @@ resource "circleci_runner_token" "admin" {
 }
 
 resource "aws_lightsail_key_pair" "key_pair" {
-  name       = "kelvintaywl-github_key"
+  name       = var.lightsail_instance_name
   public_key = var.public_ssh_key
 }
 
