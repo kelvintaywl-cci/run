@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.47.0"
+      version = ">= 5.47.0"
     }
     circleci = {
       source  = "kelvintaywl/circleci"
@@ -15,7 +15,6 @@ provider "aws" {
   # Configuration options
   region = var.aws_region
   default_tags {
-    tags = local.aws_tags
+    tags = var.aws_tags
   }
-  profile = "ccisup-tf"
 }
