@@ -17,11 +17,21 @@ resource "aws_lightsail_key_pair" "key_pair" {
   public_key = var.public_ssh_key
 }
 
-# Create a new GitLab Lightsail Instance
+data "aws_availability_zones" "zones" {
+  all_availability_zones = true
+
+  filter {
+    name   = "group-name"
+    values = [var.aws_region]
+  }
+}
+
+# Create a new Lightsail Instance
 resource "aws_lightsail_instance" "circleci_runner3_linux" {
-  count             = var.num_machines
-  name              = format("%s_%02d", var.lightsail_instance_name, count.index)
-  availability_zone = "${var.aws_region}a"
+  count = var.num_machines
+  name  = format("%s_%02d", var.lightsail_instance_name, count.index)
+  # first AZ of the region
+  availability_zone = sort(data.aws_availability_zones.zones.names)[0]
   blueprint_id      = var.lightsail_blueprint_id
   bundle_id         = var.lightsail_bundle_id
   key_pair_name     = aws_lightsail_key_pair.key_pair.name
