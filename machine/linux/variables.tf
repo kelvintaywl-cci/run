@@ -58,3 +58,15 @@ variable "lightsail_instance_name" {
   type        = string
   description = "Name (identifier) for the AWS Lightsail instance"
 }
+
+variable "is_debian" {
+  type        = bool
+  default     = true
+  description = "True if underlying OS is Debian-based, or false for RPM"
+}
+
+variable "circleci_hostname" {
+  type        = string
+  default     = "runner.circleci.com"
+  description = "Set this to your CircleCI Server (>= 4.4.x) domain if for Server"
+}

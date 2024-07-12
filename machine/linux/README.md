@@ -25,6 +25,7 @@ No modules.
 | [aws_lightsail_key_pair.key_pair](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lightsail_key_pair) | resource |
 | [circleci_runner_resource_class.machine_linux](https://registry.terraform.io/providers/kelvintaywl/circleci/1.0.1/docs/resources/runner_resource_class) | resource |
 | [circleci_runner_token.admin](https://registry.terraform.io/providers/kelvintaywl/circleci/1.0.1/docs/resources/runner_token) | resource |
+| [aws_availability_zones.zones](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
 ## Inputs
 
@@ -32,6 +33,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | n/a | yes |
 | <a name="input_aws_tags"></a> [aws\_tags](#input\_aws\_tags) | AWS default tags for all resources | `map(string)` | `{}` | no |
+| <a name="input_circleci_hostname"></a> [circleci\_hostname](#input\_circleci\_hostname) | Set this to your CircleCI Server (>= 4.4.x) domain if for Server | `string` | `"runner.circleci.com"` | no |
+| <a name="input_is_debian"></a> [is\_debian](#input\_is\_debian) | True if underlying OS is Debian-based, or false for RPM | `bool` | `true` | no |
 | <a name="input_lightsail_blueprint_id"></a> [lightsail\_blueprint\_id](#input\_lightsail\_blueprint\_id) | The ID for a virtual private server image. See https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lightsail/get-blueprints.html | `string` | n/a | yes |
 | <a name="input_lightsail_bundle_id"></a> [lightsail\_bundle\_id](#input\_lightsail\_bundle\_id) | AWS Lightsail bundle ID. See https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lightsail/get-bundles.html | `string` | n/a | yes |
 | <a name="input_lightsail_instance_name"></a> [lightsail\_instance\_name](#input\_lightsail\_instance\_name) | Name (identifier) for the AWS Lightsail instance | `string` | n/a | yes |

@@ -39,10 +39,11 @@ resource "aws_lightsail_instance" "circleci_runner3_linux" {
   user_data = templatefile(
     "${path.module}/tmpl/user_data.sh.tftpl",
     {
-      token = length(var.runner_token) == 0 ? circleci_runner_token.admin[0].token : var.runner_token
-      name  = format("%s_%02d", var.lightsail_instance_name, count.index)
-      # CircleCI Cloud
-      hostname = "runner.circleci.com"
+      token     = length(var.runner_token) == 0 ? circleci_runner_token.admin[0].token : var.runner_token
+      name      = format("%s_%02d", var.lightsail_instance_name, count.index)
+      is_debian = var.is_debian
+      # CircleCI Cloud by default
+      hostname = var.circleci_hostname
     }
   )
 }
