@@ -1,4 +1,6 @@
 <!-- BEGIN_TF_DOCS -->
+
+
 ## Requirements
 
 | Name | Version |
@@ -34,7 +36,7 @@ No modules.
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | n/a | yes |
 | <a name="input_aws_tags"></a> [aws\_tags](#input\_aws\_tags) | AWS default tags for all resources | `map(string)` | `{}` | no |
 | <a name="input_circleci_hostname"></a> [circleci\_hostname](#input\_circleci\_hostname) | Set this to your CircleCI Server (>= 4.4.x) domain if for Server | `string` | `"runner.circleci.com"` | no |
-| <a name="input_is_debian"></a> [is\_debian](#input\_is\_debian) | True if underlying OS is Debian-based, or false for RPM | `bool` | `true` | no |
+| <a name="input_custom_config"></a> [custom\_config](#input\_custom\_config) | Custom configuration used as part of the user-data (provisioning script). Script will be run before starting the CircleCI runner agent. | `string` | n/a | yes |
 | <a name="input_lightsail_blueprint_id"></a> [lightsail\_blueprint\_id](#input\_lightsail\_blueprint\_id) | The ID for a virtual private server image. See https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lightsail/get-blueprints.html | `string` | n/a | yes |
 | <a name="input_lightsail_bundle_id"></a> [lightsail\_bundle\_id](#input\_lightsail\_bundle\_id) | AWS Lightsail bundle ID. See https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lightsail/get-bundles.html | `string` | n/a | yes |
 | <a name="input_lightsail_instance_name"></a> [lightsail\_instance\_name](#input\_lightsail\_instance\_name) | Name (identifier) for the AWS Lightsail instance | `string` | n/a | yes |
@@ -50,5 +52,56 @@ No modules.
 |------|-------------|
 | <a name="output_public_ips"></a> [public\_ips](#output\_public\_ips) | Public IP addresses of AWS Lightsail instance(s) |
 | <a name="output_public_ssh_key"></a> [public\_ssh\_key](#output\_public\_ssh\_key) | Public key for SSH key set up on AWS Lightsail instance(s) |
-| <a name="output_username"></a> [username](#output\_username) | Username of AWS Lightsail instance(s), used for SSH |
+| <a name="output_username"></a> [username](#output\_username) | Username of AWS Lightsail instance(s), used for SSH |  
+
+## Examples
+
+```hcl
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.57.0"
+    }
+  }
+}
+
+provider "aws" {
+  # Configuration options
+  # You can set the AWS_PROFILE env var to point to your SSO profile
+}
+
+provider "circleci" {
+  # Configuration options
+  # Uses the CIRCLE_TOKEN env var by default
+}
+
+module "machine3_runners" {
+  source = "git::https://github.com/kelvintaywl-cci/run.git//machine/linux"
+
+  aws_region = "ap-northeast-1"
+  aws_tags = {
+    iac : "true"
+  }
+
+  num_machines = 1
+
+  lightsail_blueprint_id  = "ubuntu_22_04"
+  lightsail_bundle_id     = "medium_3_0"
+  lightsail_instance_name = "kelvintaywl-machine3-runner-medium"
+
+  runner_resource_class      = "kelvintaywl-cci/lightsail-medium"
+  runner_resource_class_desc = "AWS Lightsail (medium) Ubuntu 22.04"
+
+  # NOTE: point this to your public SSH key on your local machine, for instance
+  public_ssh_key = file(...)
+
+  # NOTE: use file() to load your local Bash script
+  custom_config = file(...)
+}
+
+output "public_ips" {
+  value = module.machine3_runners.public_ips
+}
+```
 <!-- END_TF_DOCS -->

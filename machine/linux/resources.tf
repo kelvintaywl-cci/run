@@ -41,12 +41,13 @@ resource "aws_lightsail_instance" "circleci_runner3_linux" {
     {
       token     = length(var.runner_token) == 0 ? circleci_runner_token.admin[0].token : var.runner_token
       name      = format("%s_%02d", var.lightsail_instance_name, count.index)
-      is_debian = var.is_debian
       # CircleCI Cloud by default
-      hostname = var.circleci_hostname
+      hostname      = var.circleci_hostname
+      custom_config = var.custom_config
     }
   )
 }
+
 
 output "public_ips" {
   value       = aws_lightsail_instance.circleci_runner3_linux[*].public_ip_address
