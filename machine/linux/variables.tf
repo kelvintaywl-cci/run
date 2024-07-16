@@ -67,5 +67,6 @@ variable "circleci_hostname" {
 
 variable "custom_config" {
   type        = string
+  default = "echo \"replace me\"\necho \"Check custom_config input for this module.\n\""
   description = "Custom configuration used as part of the user-data (provisioning script). Script will be run before starting the CircleCI runner agent."
 }
