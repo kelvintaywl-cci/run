@@ -97,7 +97,7 @@ module "machine3_runners" {
   public_ssh_key = file(...)
 
   # NOTE: use file() to load your local Bash script
-  custom_config = file(...)
+  user_data = file(...)
 }
 
 output "public_ips" {
