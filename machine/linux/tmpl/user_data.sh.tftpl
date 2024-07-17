@@ -21,7 +21,7 @@ yq e ".runner.cleanup_working_directory = true" -i $CONFIG_YAML
 
 ## ---------------------------------- custom config
 echo "Running custom configuration...."
-${custom_config}
+${user_data}
 echo "[DONE] custom configuration."
 ## ---------------------------------- /custom config
 

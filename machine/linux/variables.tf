@@ -65,8 +65,8 @@ variable "circleci_hostname" {
   description = "Set this to your CircleCI Server (>= 4.4.x) domain if for Server"
 }
 
-variable "custom_config" {
+variable "user_data" {
   type        = string
-  default = "echo \"replace me\"\necho \"Check custom_config input for this module.\n\""
-  description = "Custom configuration used as part of the user-data (provisioning script). Script will be run before starting the CircleCI runner agent."
+  default     = "echo \"replace me\"\necho \"Check custom_config input for this module.\n\""
+  description = "Custom configuration (Bash) used as part of the user-data (provisioning script). Script will be run before starting the CircleCI runner agent."
 }
