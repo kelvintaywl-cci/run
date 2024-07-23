@@ -70,3 +70,21 @@ variable "user_data" {
   default     = "echo \"replace me\"\necho \"Check custom_config input for this module.\n\""
   description = "Custom configuration (Bash) used as part of the user-data (provisioning script). Script will be run before starting the CircleCI runner agent."
 }
+
+variable "working_directory" {
+  type        = string
+  default     = "/tmp/circleci-runner"
+  description = "Working directory for job. See https://circleci.com/docs/machine-runner-3-configuration-reference/#runner-working-directory"
+}
+
+variable "cleanup_working_directory" {
+  type        = bool
+  default     = true
+  description = "true if cleanup of working directory after each run is required. See https://circleci.com/docs/machine-runner-3-configuration-reference/#runner-cleanup-working-directory"
+}
+
+variable "command_prefix" {
+  type        = list(string)
+  default     = [""]
+  description = "Command prefix used to invoke job. See https://circleci.com/docs/machine-runner-3-configuration-reference/#runner-command-prefix"
+}

@@ -42,8 +42,11 @@ resource "aws_lightsail_instance" "circleci_runner3_linux" {
       token = length(var.runner_token) == 0 ? circleci_runner_token.admin[0].token : var.runner_token
       name  = format("%s_%02d", var.lightsail_instance_name, count.index)
       # CircleCI Cloud by default
-      hostname  = var.circleci_hostname
-      user_data = var.user_data
+      hostname                  = var.circleci_hostname
+      user_data                 = var.user_data
+      working_directory         = var.working_directory
+      cleanup_working_directory = var.cleanup_working_directory
+      command_prefix            = var.command_prefix
     }
   )
 }

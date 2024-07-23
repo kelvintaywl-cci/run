@@ -16,8 +16,9 @@ chmod u+w /tmp/circleci-runner
 yq e ".api.auth_token = \"${token}\"" -i $CONFIG_YAML
 yq e ".api.url = \"https://${hostname}\"" -i $CONFIG_YAML
 yq e ".runner.name = \"${name}\"" -i $CONFIG_YAML
-yq e ".runner.working_directory = \"/tmp/circleci-runner\"" -i $CONFIG_YAML
-yq e ".runner.cleanup_working_directory = true" -i $CONFIG_YAML
+yq e ".runner.working_directory = \"${working_directory}\"" -i $CONFIG_YAML
+yq e ".runner.cleanup_working_directory = ${cleanup_working_directory}" -i $CONFIG_YAML
+yq e ".runner.command_prefix = ${command_prefix}" -i $CONFIG_YAML
 
 ## ---------------------------------- custom config
 echo "Running custom configuration...."
