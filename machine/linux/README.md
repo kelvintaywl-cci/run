@@ -36,6 +36,8 @@ No modules.
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | n/a | yes |
 | <a name="input_aws_tags"></a> [aws\_tags](#input\_aws\_tags) | AWS default tags for all resources | `map(string)` | `{}` | no |
 | <a name="input_circleci_hostname"></a> [circleci\_hostname](#input\_circleci\_hostname) | Set this to your CircleCI Server (>= 4.4.x) domain if for Server | `string` | `"runner.circleci.com"` | no |
+| <a name="input_cleanup_working_directory"></a> [cleanup\_working\_directory](#input\_cleanup\_working\_directory) | true if cleanup of working directory after each run is required. See https://circleci.com/docs/machine-runner-3-configuration-reference/#runner-cleanup-working-directory | `bool` | `true` | no |
+| <a name="input_command_prefix"></a> [command\_prefix](#input\_command\_prefix) | Command prefix used to invoke job. See https://circleci.com/docs/machine-runner-3-configuration-reference/#runner-command-prefix | `list(string)` | <pre>[<br>  ""<br>]</pre> | no |
 | <a name="input_lightsail_blueprint_id"></a> [lightsail\_blueprint\_id](#input\_lightsail\_blueprint\_id) | The ID for a virtual private server image. See https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lightsail/get-blueprints.html | `string` | n/a | yes |
 | <a name="input_lightsail_bundle_id"></a> [lightsail\_bundle\_id](#input\_lightsail\_bundle\_id) | AWS Lightsail bundle ID. See https://awscli.amazonaws.com/v2/documentation/api/latest/reference/lightsail/get-bundles.html | `string` | n/a | yes |
 | <a name="input_lightsail_instance_name"></a> [lightsail\_instance\_name](#input\_lightsail\_instance\_name) | Name (identifier) for the AWS Lightsail instance | `string` | n/a | yes |
@@ -45,6 +47,7 @@ No modules.
 | <a name="input_runner_resource_class_desc"></a> [runner\_resource\_class\_desc](#input\_runner\_resource\_class\_desc) | Description for CircleCI Runner resource-class | `string` | `""` | no |
 | <a name="input_runner_token"></a> [runner\_token](#input\_runner\_token) | CircleCI Runner resource-class token, if already created | `string` | `""` | no |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | Custom configuration (Bash) used as part of the user-data (provisioning script). Script will be run before starting the CircleCI runner agent. | `string` | `"echo \"replace me\"\necho \"Check custom_config input for this module.\n\""` | no |
+| <a name="input_working_directory"></a> [working\_directory](#input\_working\_directory) | Working directory for job. See https://circleci.com/docs/machine-runner-3-configuration-reference/#runner-working-directory | `string` | `"/tmp/circleci-runner"` | no |
 
 ## Outputs
 
