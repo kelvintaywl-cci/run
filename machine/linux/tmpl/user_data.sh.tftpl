@@ -18,7 +18,7 @@ yq e ".api.url = \"https://${hostname}\"" -i $CONFIG_YAML
 yq e ".runner.name = \"${name}\"" -i $CONFIG_YAML
 yq e ".runner.working_directory = \"${working_directory}\"" -i $CONFIG_YAML
 yq e ".runner.cleanup_working_directory = ${cleanup_working_directory}" -i $CONFIG_YAML
-yq e ".runner.command_prefix = ${command_prefix}" -i $CONFIG_YAML
+yq e ".runner.command_prefix = ${jsonencode(command_prefix)}" -i $CONFIG_YAML
 
 ## ---------------------------------- custom config
 echo "Running custom configuration...."
@@ -27,3 +27,4 @@ echo "[DONE] custom configuration."
 ## ---------------------------------- /custom config
 
 sudo systemctl enable circleci-runner && sudo systemctl start circleci-runner
+c
