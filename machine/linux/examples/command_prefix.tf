@@ -35,8 +35,15 @@ module "machine3_runners" {
   runner_resource_class_desc = "AWS Lightsail (medium) Ubuntu 22.04"
   public_ssh_key = file(...)
 
-  # add circleci to sudo group
-  user_data = "usermod -aG sudo circleci"
+  user_data = <<EOT
+# add circleci user to sudo group
+usermod -aG sudo circleci
+
+# Lightsail applies the /etc/sudoers.d/ directories' files
+# So we add a new rule for our circleci user to not require password prompts during sudo
+touch /etc/sudoers.d/99-circleci-runner
+echo "circleci ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/99-circleci-runner
+  EOT
   # run job steps with elevated privileges
   command_prefix = ["sudo", "-niHu", "circleci", "--"]
 }
