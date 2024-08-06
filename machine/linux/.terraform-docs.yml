@@ -16,6 +16,14 @@ content: |-
 
   ## Examples
 
+  Basic configuration
+
   ```hcl
   {{ include "examples/basic.tf" }}
+  ```
+
+  Using command prefix and custom userdata
+
+  ```hcl
+  {{ include "examples/command_prefix.tf" }}
   ```
